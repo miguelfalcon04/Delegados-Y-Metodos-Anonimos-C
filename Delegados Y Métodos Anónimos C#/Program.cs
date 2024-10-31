@@ -9,12 +9,25 @@ using System.Threading.Tasks;
 namespace Delegados_Y_Métodos_Anónimos_C_
 {
     delegate int Operar(int x, int y);
+    delegate double Calculo(int x);
     delegate int Operacion(int x, int y);
+    delegate int Transformar(int x);
+    delegate int OperarArray(int[] array);
     delegate int OperacionCallback(int x, int y);
     delegate bool Validar(int x);
     internal class Program
     {
         static int Sumar(int a, int b) => a + b;
+
+        static int SumarArray(int[] array)
+        {
+            int suma = 0;
+            for (int i = 0; i < array.Length; i++)
+            {
+                suma += array[i];
+            }
+            return suma;
+        }
 
         static int EjecutarOperacion(OperacionCallback op, int x, int y)
         {
@@ -38,6 +51,12 @@ namespace Delegados_Y_Métodos_Anónimos_C_
         static bool ValidarNumero(int x) => x > 0;
         static bool ValidarPar(int x) => x%2 == 0;
 
+        static int Doblar(int x) => x * 2;
+        static int Triplicar(int x) => x * 3;
+        static int Cuadrado(int x) => x * 2;
+
+        static double RaizCuadrada(int x) => Math.Sqrt(x);
+        static double Logaritmo(int x) => Math.Log(x);
 
         static void Main(string[] args)
         {
@@ -94,13 +113,40 @@ namespace Delegados_Y_Métodos_Anónimos_C_
             Console.WriteLine();
             Console.WriteLine("EJERCICIO 7");
 
-            Operar eje07 = Sumar;
-            eje07 += Restar;
-            eje07 += Multiplicar;
+            OperarArray eje07 = SumarArray;
+            int[] arr = { 1, 2, 3, 4, 5 };
 
-            foreach (Operar ope in eje07.GetInvocationList())
+            Console.WriteLine(eje07(arr));
+
+            // EJERCICIO 8 
+            Console.WriteLine();
+            Console.WriteLine("EJERCICIO 8");
+
+            Transformar transform = Doblar;
+            transform += Triplicar; 
+            transform += Cuadrado;
+
+            foreach(Transformar trans in transform.GetInvocationList())
             {
-                Console.WriteLine(ope.Method.Name + ": " + ope(5, 3));
+                Console.WriteLine(trans.Method.Name + ": " + trans(3));
+            }
+
+            // EJERCICIO 10
+            Console.WriteLine();
+            Console.WriteLine("EJERCICIO 10");
+
+            Calculo cal = RaizCuadrada;
+            cal += Logaritmo;
+
+            foreach(Calculo calc in cal.GetInvocationList())
+            {
+                try
+                {
+                    Console.WriteLine(calc.Method.Name + ": " + calc(3));
+                }
+                catch (Exception ex) {
+                    Console.WriteLine(ex.Message);
+                }
             }
 
             // MULTICASTING DELEGADOS 
