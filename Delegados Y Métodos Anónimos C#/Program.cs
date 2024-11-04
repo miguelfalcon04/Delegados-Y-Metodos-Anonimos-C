@@ -85,6 +85,10 @@ namespace Delegados_Y_Métodos_Anónimos_C_
         public delegate int ContarCaracteres(string palabra);
         public delegate void OperacionDel(int num);
         public delegate bool Filtro(Producto producto);
+        public delegate bool FiltroEmpleado(Empleado empleado);
+        public delegate bool FiltroLibros(Libro libro);
+        public delegate bool FiltroVehiculo(Vehiculo vehiculo);
+
         public class Producto
         {
             private string nombre;
@@ -92,10 +96,12 @@ namespace Delegados_Y_Métodos_Anónimos_C_
 
             public static void MostratProductosFiltrados(List<Producto> lista, Filtro fil)
             {
-                for(int i = 0; i < lista.Count; i++)
+                foreach(Producto producto in lista)
                 {
-                    if()
-                    Console.WriteLine($"");
+                    if(fil(producto))
+                    {
+                    Console.WriteLine($"{producto.Nombre} - Cantidad: {producto.Cantidad}");
+                    }
                 }
             }
 
@@ -103,6 +109,61 @@ namespace Delegados_Y_Métodos_Anónimos_C_
             public int Cantidad { get; set; }
 
         }
+
+        public class Empleado
+        {
+            public string Nombre { get; set; }
+            public int Edad { get; set; }
+        }
+
+        public static void FiltrarEmpleados(List<Empleado> lista, FiltroEmpleado filtro)
+        {
+            foreach (Empleado empleado in lista)
+            {
+                if (filtro(empleado))
+                {
+                    Console.WriteLine($"{empleado.Nombre} - Edad: {empleado.Edad}");
+                }
+            }
+        }
+
+        public class Libro
+        {
+            public string Titulo { get; set; }
+            public string Categoria { get; set; }
+        }
+
+        public static void MostrarLibrosPorCategoria(List<Libro> libros, FiltroLibros filtro)
+        {
+            foreach (Libro libro in libros)
+            {
+                if (filtro(libro))
+                {
+                    Console.WriteLine($"{libro.Titulo} - Categoria: {libro.Categoria}");
+                }
+            }
+        }
+
+        public class Vehiculo
+        {
+            public string Marca { get; set; }
+            public string Modelo { get; set; }
+            public int AnioFabricacion { get; set; }
+        }
+
+        public static void MostrarVehiculosAntiguos(List<Vehiculo> vehiculos, FiltroVehiculo filtro)
+        {
+            foreach (Vehiculo vehiculo in vehiculos)
+            {
+                if (filtro(vehiculo))
+                {
+                    Console.WriteLine($"{vehiculo.Marca} {vehiculo.Modelo} - Año: {vehiculo.AnioFabricacion}");
+                }
+            }
+        }
+
+
+
 
         static void Main(string[] args)
         {
@@ -339,10 +400,74 @@ namespace Delegados_Y_Métodos_Anónimos_C_
             Console.WriteLine();
             Console.WriteLine("Ejercicio 9");
 
-            Filtro fil = delegate (Producto producto)
+            List<Producto> productos = new List<Producto>()
+            {
+                new Producto { Nombre = "Patatas", Cantidad = 10 },
+                new Producto { Nombre = "Pitufos", Cantidad = 3 },
+                new Producto { Nombre = "Molletes", Cantidad = 7 }
+            };
+
+            Filtro filtroCantidad = delegate (Producto producto)
             {
                 return producto.Cantidad > 5;
             };
+
+            Producto.MostratProductosFiltrados(productos, filtroCantidad);
+
+            // EJERCICIO 10
+            Console.WriteLine();
+            Console.WriteLine("Ejercicio 10");
+
+            List<Empleado> empleados = new List<Empleado>
+{
+            new Empleado { Nombre = "Miguel", Edad = 28 },
+            new Empleado { Nombre = "Noelia", Edad = 35 },
+            new Empleado { Nombre = "Joselu", Edad = 40 }
+};
+
+            FiltroEmpleado filtroEdad = delegate (Empleado empleado)
+            {
+                return empleado.Edad > 30;
+            };
+
+            FiltrarEmpleados(empleados, filtroEdad);
+
+            // EJERCICIO 11
+            Console.WriteLine();
+            Console.WriteLine("Ejercicio 11");
+
+            List<Libro> libros = new List<Libro>
+{
+            new Libro { Titulo = "Libro 1", Categoria = "Ficción" },
+            new Libro { Titulo = "Libro 2", Categoria = "Ciencia" },
+            new Libro { Titulo = "Libro 3", Categoria = "Ficción" }
+};
+
+            FiltroLibros filtroFiccion = delegate (Libro libro)
+            {
+                return libro.Categoria == "Ficción";
+            };
+
+            MostrarLibrosPorCategoria(libros, filtroFiccion);
+
+            // EJERCICIO 12
+            Console.WriteLine();
+            Console.WriteLine("Ejercicio 12");
+
+            List<Vehiculo> vehiculos = new List<Vehiculo>
+{
+            new Vehiculo { Marca = "Toyota", Modelo = "Corolla", AnioFabricacion = 2005 },
+            new Vehiculo { Marca = "Ford", Modelo = "Fiesta", AnioFabricacion = 2011 },
+            new Vehiculo { Marca = "Honda", Modelo = "Civic", AnioFabricacion = 2008 }
+};
+
+            FiltroVehiculo filtroAnio = delegate (Vehiculo vehiculo)
+            {
+                return vehiculo.AnioFabricacion < 2010;
+            };
+
+            MostrarVehiculosAntiguos(vehiculos, filtroAnio);
+
         }
     }
 }
