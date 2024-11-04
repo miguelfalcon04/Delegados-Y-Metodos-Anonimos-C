@@ -58,10 +58,23 @@ namespace Delegados_Y_Métodos_Anónimos_C_
         static double RaizCuadrada(int x) => Math.Sqrt(x);
         static double Logaritmo(int x) => Math.Log(x);
 
+        public delegate string ObtenerDelegadoTexto(string nombre);
+        static void Mostrar(ObtenerDelegadoTexto miDelegado)
+        {
+            Console.WriteLine(miDelegado("Mundo"));
+        }
+
+
+        public delegate bool ValidarEdades(int x);
+        static void ImprimirConsola(ValidarEdades miDelegado, int x)
+        {
+            Console.WriteLine(miDelegado(x));
+        }
+
         static void Main(string[] args)
         {
             // EJERCICIO 1 2 3 
-            Console.WriteLine("EJERCICIO 1 2 3");
+            Console.WriteLine("Ejercicio 1 2 3");
 
             Operacion op = Sumar;
             Console.WriteLine("Suma: " + op(5, 3));
@@ -77,7 +90,7 @@ namespace Delegados_Y_Métodos_Anónimos_C_
 
             // EJERCICIO 4
             Console.WriteLine();
-            Console.WriteLine("EJERCICIO 4");
+            Console.WriteLine("Ejercicio 4");
 
             Operacion multicast = Sumar;
             multicast += Restar;
@@ -90,7 +103,7 @@ namespace Delegados_Y_Métodos_Anónimos_C_
 
             // EJERCICIO 5
             Console.WriteLine();
-            Console.WriteLine("EJERCICIO 5");
+            Console.WriteLine("Ejercicio 5");
 
             Console.WriteLine("Suma: " + EjecutarOperacion(Sumar, 5, 3));
             Console.WriteLine("Resta: " + EjecutarOperacion(Restar, 5, 3));
@@ -98,7 +111,7 @@ namespace Delegados_Y_Métodos_Anónimos_C_
 
             // EJERCICIO 6
             Console.WriteLine();
-            Console.WriteLine("EJERCICIO 6");
+            Console.WriteLine("Ejercicio 6");
 
             Operar eje06 = Sumar;
             eje06 += Restar;
@@ -111,7 +124,7 @@ namespace Delegados_Y_Métodos_Anónimos_C_
 
             // EJERCICIO 7
             Console.WriteLine();
-            Console.WriteLine("EJERCICIO 7");
+            Console.WriteLine("Ejercicio 7");
 
             OperarArray eje07 = SumarArray;
             int[] arr = { 1, 2, 3, 4, 5 };
@@ -120,7 +133,7 @@ namespace Delegados_Y_Métodos_Anónimos_C_
 
             // EJERCICIO 8 
             Console.WriteLine();
-            Console.WriteLine("EJERCICIO 8");
+            Console.WriteLine("Ejercicio 8");
 
             Transformar transform = Doblar;
             transform += Triplicar; 
@@ -133,7 +146,7 @@ namespace Delegados_Y_Métodos_Anónimos_C_
 
             // EJERCICIO 10
             Console.WriteLine();
-            Console.WriteLine("EJERCICIO 10");
+            Console.WriteLine("Ejercicio 10");
 
             Calculo cal = RaizCuadrada;
             cal += Logaritmo;
@@ -149,26 +162,35 @@ namespace Delegados_Y_Métodos_Anónimos_C_
                 }
             }
 
-            // MULTICASTING DELEGADOS 
-            //Operacion op = Sumar;
-            //op += Restar;
+            /////////// MÉTODOS ANÓNIMOS ///////////
+            Console.WriteLine();
+            Console.WriteLine("Mi primer método anónimo");
+            ObtenerDelegadoTexto miDelegado = delegate (string nombre)
+            {
+                return "Hola, " + nombre;
+            };
+            Console.WriteLine(miDelegado("Miguel"));
+            Mostrar(miDelegado);
 
-            //foreach (Operacion metedo in op.GetInvocationList()) {
-            //    Console.WriteLine(metedo(5,3));
-            //}
-
-            // DELEGADOS FUNCIONES CALLBACK
-            //Console.WriteLine("Suma: " + EjecutarOperacion(Sumar, 5, 3));
+            // RELACIÓN 3 INICIALES MÉTODOS ANÓNIMOS
+            Console.WriteLine();
+            Console.WriteLine("EJERCICIO 3 INICIALES MÉTODOS ANÓNIMOS");
 
             // EJERCICIO 1
-            //Validar validate = ValidarNumero;
-            //Console.WriteLine(validate(2));
+            Console.WriteLine();
+            Console.WriteLine("Ejercicio 1");
+
+            ValidarEdades validate = delegate (int x)
+            {
+                return x >= 18;
+            };
+            Console.WriteLine(validate(19));
 
             // EJERCICIO 2
-            //validate = ValidarPar;
-            //Console.WriteLine(validate(3));
+            Console.WriteLine();
+            Console.WriteLine("Ejercicio 2");
 
-
+            ImprimirConsola(validate, 19);
         }
     }
 }
